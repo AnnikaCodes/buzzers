@@ -9,6 +9,9 @@ def await_buzz(pins):
     while True:
         for pin in pins:
             if pin.value() == 1: # Buzz!
+                time.sleep(0.01)
+                if pin.value() != 1: # false alarm?
+                    continue
                 led.toggle() # todo reduce the current here
                 reset(pin)
                 return pin
@@ -78,3 +81,5 @@ def buzz_chime(base):
     spkr(base+20000, t=0.12)
     spkr(base+30000, t=0.12)
     spkr(base+40000, t=0.4)
+
+buzzer_loop()
