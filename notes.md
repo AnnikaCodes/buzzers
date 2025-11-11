@@ -12,4 +12,6 @@ drop (which improves efficiency and reduces ripple on VSYS)."
     - need to read these ^^^`
 - Should probably put resistors before the LEDs, so that voltage across LED is not too high. Want voltage across to be 2.1V at <= 20mA. Say we provide 3.3V initially. Diode drop is ~2.1 V (up to 2.8V), so V drop across resistor is 3.3V - 2.1 V = 1.2V (or at minimum 0.5V). R = V/I = 1.2V/(20 mA) = 60 ohm, so let's try a 60 ohm resistor. 50 ohm would give
 
+- TODO: fix bug where simulatenous buzzes
+
 Buzzer wired 11/8: Green jack wire -> LED +, Red jack wire -> LED -, black & yellow => switch
