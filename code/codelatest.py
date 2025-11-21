@@ -2,10 +2,10 @@ import digitalio
 import board
 import audiomp3
 import audiopwmio
-CLEAR_PIN = board.GP10
+CLEAR_PIN = board.GP9
 # (led, switch)
-RED_TEAM_PINS = [(board.GP17, board.GP16), (board.GP18, board.GP19)]
-GREEN_TEAM_PINS = []
+RED_TEAM_PINS = [ (board.GP27, board.GP26), (board.GP21, board.GP22), (board.GP16, board.GP17), (board.GP18, board.GP19)]
+GREEN_TEAM_PINS = [(board.GP1, board.GP0),(board.GP2, board.GP3), (board.GP5, board.GP4)]
 
 clear = digitalio.DigitalInOut(CLEAR_PIN)
 clear.switch_to_input(pull=digitalio.Pull.DOWN)
@@ -36,6 +36,10 @@ def await_buzz(red, green):
     while True:
         for led, switch in red + green:
             if switch.value == True:
+                time.sleep(0.01)
+                #switch.switch_to_input(pull=digitalio.Pull.DOWN)
+                if switch.value == False:
+                    continue
                 return led
 def await_clear():
     while clear.value == False:
@@ -46,6 +50,13 @@ def await_clear():
     #    time.sleep(0.001)
     #    await_clear()
     print("clearing")
+    for led, switch in red_pins + green_pins:
+        led.value = False
+        led.switch_to_output(value=False)
+        switch.switch_to_output(value=False)
+        switch.value = False
+        switch.switch_to_input(pull=digitalio.Pull.DOWN)
+    
     clear.switch_to_output(value=False)
     clear.value = False
     clear.switch_to_input(pull=digitalio.Pull.DOWN)
