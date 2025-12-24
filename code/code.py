@@ -87,7 +87,7 @@ def await_clear():
 
 def play_buzz_tone():
     buzz_tone = audiomp3.MP3Decoder(open("./buzz.mp3", "rb"))
-    audio.play(buzz_tone)
+    #audio.play(buzz_tone)
     
 print("go")
 buzzer_loop()
