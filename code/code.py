@@ -25,8 +25,9 @@ for i in range(len(RED_TEAM_PINS)):
         protocol.RED_TEAM_BUZZES[i],
         protocol.RED_TEAM_LOCKOUTS[i]
     ))
+# print(red_pins)
 
-for led, switch in red_pins + green_pins:
+for led, switch, _, _ in red_pins + green_pins:
     led.switch_to_output(value=False)
     led.direction = digitalio.Direction.OUTPUT
     switch.switch_to_input(pull=digitalio.Pull.DOWN)
@@ -37,30 +38,31 @@ import time
 def buzzer_loop():
     while True:
         audio.stop()
-        led_pin = await_buzz(red_pins, green_pins)    
+        led_pin, lockout_exclude = await_buzz(red_pins, green_pins)    
         led_pin.value = True
         t = time.localtime()
-        print(f"buzz! at {t.tm_hour}:{t.tm_min}:{t.tm_sec}")
+        # print(f"buzz! at {t.tm_hour}:{t.tm_min}:{t.tm_sec}")
         status_led.value = True
         play_buzz_tone() # todo: different tones for different teams
        
-        await_clear()
+        await_clear(lockout_exclude)
         led_pin.value = False
         status_led.value = False
 
 def await_buzz(red, green):
     while True:
-        for led, switch, buzz_protocol, _ in red + green:
+        for led, switch, buzz_protocol, lockout_protocol in red + green:
             if switch.value == True:
                 time.sleep(0.01)
                 #switch.switch_to_input(pull=digitalio.Pull.DOWN)
                 if switch.value == False:
                     continue
+                # print ("BUZZ")
                 print(buzz_protocol)
-                return led
-def await_clear():
+                return led, lockout_protocol
+def await_clear(last_buzz = ''):
     # duplicated
-    locked_out_already = []
+    locked_out_already = [last_buzz]
     while clear.value == False:
         if not audio.playing:
             audio.stop()
@@ -72,7 +74,7 @@ def await_clear():
                 print(lockout_protocol)
                 locked_out_already.append(lockout_protocol)
 
-    for led, switch in red_pins + green_pins:
+    for led, switch, _, _ in red_pins + green_pins:
         led.value = False
         led.switch_to_output(value=False)
         switch.switch_to_output(value=False)
