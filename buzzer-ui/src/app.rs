@@ -12,10 +12,18 @@ impl App {
         // Restore app state using cc.storage (requires the "persistence" feature).
         // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
         // for e.g. egui::PaintCallback.
-        Self {
+        let mut result = Self {
             messages_received: Vec::new(),
             serial_connection: crate::serial::try_get_serial_connection(1),
+        };
+        // Drain serial connection
+        loop {
+            match serial::get_serial_message(&mut result.serial_connection) {
+                Ok(Some(..)) => {},
+                _ => break,
+            }
         }
+        result
     }
 }
 
@@ -44,7 +52,9 @@ impl eframe::App for App {
                for message in &self.messages_received {
                 last = Some(ui.label(message));
                }
-               last.unwrap().scroll_to_me(None);
+               if let Some(scrollto) = last {
+                scrollto.scroll_to_me(None);
+               }
             });
        });
        // todo: advanced — have separate thread watch serial port and only request repaint whjen needed.
