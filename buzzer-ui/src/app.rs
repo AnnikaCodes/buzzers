@@ -19,7 +19,7 @@ impl App {
         // Drain serial connection
         loop {
             match serial::get_serial_message(&mut result.serial_connection) {
-                Ok(Some(..)) => {},
+                Ok(Some(..)) => {}
                 _ => break,
             }
         }
@@ -28,36 +28,40 @@ impl App {
 }
 
 impl eframe::App for App {
-   fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         match serial::get_serial_message(&mut self.serial_connection) {
             Ok(Some(messages)) => {
                 for message in messages {
                     match message {
-                        crate::serial::SerialMessage::UnknownCommand(..) => println!("{}", message.to_human_readable()),
+                        crate::serial::SerialMessage::UnknownCommand(..) => {
+                            println!("{}", message.to_human_readable())
+                        }
                         _ => self.messages_received.push(message.to_human_readable()),
                     };
                 }
-            },
+            }
             Ok(None) => {
                 // No message received within timeout
-            },
+            }
             Err(e) => {
                 eprintln!("Error reading serial message: {}", e);
-            },
+            }
         }
         let max_len = 50;
-       egui::CentralPanel::default().show(ctx, |ui| {
-            egui::ScrollArea::vertical().auto_shrink(false).show(ui, |ui| {
-                let mut last = None;
-               for message in &self.messages_received {
-                last = Some(ui.label(message));
-               }
-               if let Some(scrollto) = last {
-                scrollto.scroll_to_me(None);
-               }
-            });
-       });
-       // todo: advanced — have separate thread watch serial port and only request repaint whjen needed.
+        egui::CentralPanel::default().show(ctx, |ui| {
+            egui::ScrollArea::vertical()
+                .auto_shrink(false)
+                .show(ui, |ui| {
+                    let mut last = None;
+                    for message in &self.messages_received {
+                        last = Some(ui.label(message));
+                    }
+                    if let Some(scrollto) = last {
+                        scrollto.scroll_to_me(None);
+                    }
+                });
+        });
+        // todo: advanced — have separate thread watch serial port and only request repaint whjen needed.
         ctx.request_repaint();
-   }
+    }
 }

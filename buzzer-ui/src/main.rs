@@ -10,7 +10,7 @@ fn main() {
     //     match serial::get_serial_message(&mut serial_connection) {
     //         Ok(Some(messages)) => {
     //             for message in messages {
-    //                 println!("{}", message.to_human_readable());    
+    //                 println!("{}", message.to_human_readable());
     //             }
     //         },
     //         Ok(None) => {
@@ -26,12 +26,12 @@ fn main() {
     match eframe::run_native(
         "Annika's Buzzer System",
         native_options,
-        Box::new(|cc| Ok(Box::new(app::App::new(cc))))
+        Box::new(|cc| Ok(Box::new(app::App::new(cc)))),
     ) {
         Ok(_) => println!("GUI ran succesfully."),
         Err(e) => {
             eprintln!("Error: {}", e);
             std::process::exit(-1);
-        },
+        }
     }
 }

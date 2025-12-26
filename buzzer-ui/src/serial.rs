@@ -1,10 +1,10 @@
 // Code for serial interface with the buzzers
 
-use serialport::SerialPortType::UsbPort;
-use serialport::SerialPort;
-use std::time::Duration;
-use chrono::Local;
 use chrono::DateTime;
+use chrono::Local;
+use serialport::SerialPort;
+use serialport::SerialPortType::UsbPort;
+use std::time::Duration;
 
 pub fn get_serial_connection() -> Option<Result<Box<dyn SerialPort>, serialport::Error>> {
     let ports = match serialport::available_ports() {
@@ -30,10 +30,10 @@ pub fn get_serial_connection() -> Option<Result<Box<dyn SerialPort>, serialport:
                             }
                             None => continue,
                         }
-                    },
+                    }
                     _ => continue,
                 }
-            },
+            }
             _ => continue,
         }
     }
@@ -45,15 +45,21 @@ pub fn get_serial_connection() -> Option<Result<Box<dyn SerialPort>, serialport:
 pub fn try_get_serial_connection(timeout: u64) -> Box<dyn SerialPort> {
     match get_serial_connection() {
         None => {
-            eprintln!("Couldn't find the buzzer system! Please plug it in to a USB port on this computer. Retrying in {} second(s)...", timeout);
+            eprintln!(
+                "Couldn't find the buzzer system! Please plug it in to a USB port on this computer. Retrying in {} second(s)...",
+                timeout
+            );
             std::thread::sleep(Duration::from_secs(timeout));
             return try_get_serial_connection(timeout * 2);
-        },
+        }
         Some(Ok(port)) => port,
         Some(Err(e)) => {
-            eprintln!("Error when trying to connect to buzzer system: {}. Exiting...", e);
+            eprintln!(
+                "Error when trying to connect to buzzer system: {}. Exiting...",
+                e
+            );
             std::process::exit(-1);
-        },
+        }
     }
 }
 
@@ -85,7 +91,7 @@ impl SerialMessage {
             'h' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Three, time),
             'i' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Four, time),
             'j' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Five, time),
-            
+
             'A' => SerialMessage::Buzz(Color::Red, BuzzerNumber::One, time),
             'B' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Two, time),
             'C' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Three, time),
@@ -105,13 +111,27 @@ impl SerialMessage {
         const fmt_string: &str = "[%H:%M:%S%.3f]";
         match self {
             SerialMessage::Buzz(color, number, time) => {
-                format!("{}: {} #{} buzzed!", time.format(fmt_string), color.to_str(), *number as u8)
-            },
+                format!(
+                    "{}: {} #{} buzzed!",
+                    time.format(fmt_string),
+                    color.to_str(),
+                    *number as u8
+                )
+            }
             SerialMessage::Lockout(color, number, time) => {
-                format!("{}: {} #{} was locked out!", time.format(fmt_string), color.to_str(), *number as u8)
-            },
-            SerialMessage::Clear(time) => format!("{}: Buzzers were cleared", time.format(fmt_string)),
-            SerialMessage::UnknownCommand(cmd, time) => format!("{}: Unknown Command: '{}'", time.format(fmt_string), cmd),
+                format!(
+                    "{}: {} #{} was locked out!",
+                    time.format(fmt_string),
+                    color.to_str(),
+                    *number as u8
+                )
+            }
+            SerialMessage::Clear(time) => {
+                format!("{}: Buzzers were cleared", time.format(fmt_string))
+            }
+            SerialMessage::UnknownCommand(cmd, time) => {
+                format!("{}: Unknown Command: '{}'", time.format(fmt_string), cmd)
+            }
         }
     }
 }
@@ -119,7 +139,7 @@ impl SerialMessage {
 // Buzzer colors
 pub enum Color {
     Red,
-    Green
+    Green,
 }
 
 impl Color {
@@ -140,10 +160,12 @@ pub enum BuzzerNumber {
     Five = 5,
 }
 
-pub fn get_serial_message(connection: &mut Box<dyn SerialPort>) -> Result<Option<Vec<SerialMessage>>, std::io::Error> {
+pub fn get_serial_message(
+    connection: &mut Box<dyn SerialPort>,
+) -> Result<Option<Vec<SerialMessage>>, std::io::Error> {
     let mut serial_buf: Vec<u8> = vec![0; 32];
     match connection.read(serial_buf.as_mut_slice()) {
-        Ok(_) => {},
+        Ok(_) => {}
         Err(e) => {
             if e.kind() == std::io::ErrorKind::TimedOut {
                 return Ok(None);
