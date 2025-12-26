@@ -1,6 +1,10 @@
 // Initially copied from https://docs.rs/eframe/latest/eframe/
-#[derive(Default)]
-pub struct App {}
+use crate::serial;
+
+pub struct App {
+    messages_received: Vec<String>,
+    serial_connection: Box<dyn serialport::SerialPort>,
+}
 
 impl App {
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
@@ -8,14 +12,42 @@ impl App {
         // Restore app state using cc.storage (requires the "persistence" feature).
         // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
         // for e.g. egui::PaintCallback.
-        Self::default()
+        Self {
+            messages_received: Vec::new(),
+            serial_connection: crate::serial::try_get_serial_connection(1),
+        }
     }
 }
 
 impl eframe::App for App {
    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        match serial::get_serial_message(&mut self.serial_connection) {
+            Ok(Some(messages)) => {
+                for message in messages {
+                    match message {
+                        crate::serial::SerialMessage::UnknownCommand(..) => println!("{}", message.to_human_readable()),
+                        _ => self.messages_received.push(message.to_human_readable()),
+                    };
+                }
+            },
+            Ok(None) => {
+                // No message received within timeout
+            },
+            Err(e) => {
+                eprintln!("Error reading serial message: {}", e);
+            },
+        }
+        let max_len = 50;
        egui::CentralPanel::default().show(ctx, |ui| {
-           ui.heading("Hello World!");
+            egui::ScrollArea::vertical().auto_shrink(false).show(ui, |ui| {
+                let mut last = None;
+               for message in &self.messages_received {
+                last = Some(ui.label(message));
+               }
+               last.unwrap().scroll_to_me(None);
+            });
        });
+       // todo: advanced — have separate thread watch serial port and only request repaint whjen needed.
+        ctx.request_repaint();
    }
 }

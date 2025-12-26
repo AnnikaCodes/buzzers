@@ -3,6 +3,8 @@
 use serialport::SerialPortType::UsbPort;
 use serialport::SerialPort;
 use std::time::Duration;
+use chrono::Local;
+use chrono::DateTime;
 
 pub fn get_serial_connection() -> Option<Result<Box<dyn SerialPort>, serialport::Error>> {
     let ports = match serialport::available_ports() {
@@ -58,57 +60,58 @@ pub fn try_get_serial_connection(timeout: u64) -> Box<dyn SerialPort> {
 // See protocol.md
 pub enum SerialMessage {
     /// Someone buzzed
-    Buzz(Color, BuzzerNumber),
+    Buzz(Color, BuzzerNumber, DateTime<Local>),
     /// Someone tried to buzz and was locked out
-    Lockout(Color, BuzzerNumber),
+    Lockout(Color, BuzzerNumber, DateTime<Local>),
     /// THe buzzers were cleared
-    Clear,
+    Clear(DateTime<Local>),
     /// We got an unknown command over serial!
-    UnknownCommand(String),
+    UnknownCommand(String, DateTime<Local>),
 }
 
 impl SerialMessage {
     /// Converts a string to a serial message
-    pub fn from_raw(msg: char) -> Self {
+    pub fn from_raw(msg: char, time: DateTime<Local>) -> Self {
         match msg {
-            'x' => SerialMessage::Clear,
+            'x' => SerialMessage::Clear(time),
 
-            'a' => SerialMessage::Lockout(Color::Red, BuzzerNumber::One),
-            'b' => SerialMessage::Lockout(Color::Red, BuzzerNumber::Two),
-            'c' => SerialMessage::Lockout(Color::Red, BuzzerNumber::Three),
-            'd' => SerialMessage::Lockout(Color::Red, BuzzerNumber::Four),
-            'e' => SerialMessage::Lockout(Color::Red, BuzzerNumber::Five),
-            'f' => SerialMessage::Lockout(Color::Green, BuzzerNumber::One),
-            'g' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Two),
-            'h' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Three),
-            'i' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Four),
-            'j' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Five),
+            'a' => SerialMessage::Lockout(Color::Red, BuzzerNumber::One, time),
+            'b' => SerialMessage::Lockout(Color::Red, BuzzerNumber::Two, time),
+            'c' => SerialMessage::Lockout(Color::Red, BuzzerNumber::Three, time),
+            'd' => SerialMessage::Lockout(Color::Red, BuzzerNumber::Four, time),
+            'e' => SerialMessage::Lockout(Color::Red, BuzzerNumber::Five, time),
+            'f' => SerialMessage::Lockout(Color::Green, BuzzerNumber::One, time),
+            'g' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Two, time),
+            'h' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Three, time),
+            'i' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Four, time),
+            'j' => SerialMessage::Lockout(Color::Green, BuzzerNumber::Five, time),
             
-            'A' => SerialMessage::Buzz(Color::Red, BuzzerNumber::One),
-            'B' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Two),
-            'C' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Three),
-            'D' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Four),
-            'E' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Five),
-            'F' => SerialMessage::Buzz(Color::Green, BuzzerNumber::One),
-            'G' => SerialMessage::Buzz(Color::Green, BuzzerNumber::Two),
-            'H' => SerialMessage::Buzz(Color::Green, BuzzerNumber::Three),
-            'I' => SerialMessage::Buzz(Color::Green, BuzzerNumber::Four),
-            'J' => SerialMessage::Buzz(Color::Green, BuzzerNumber::Five),
+            'A' => SerialMessage::Buzz(Color::Red, BuzzerNumber::One, time),
+            'B' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Two, time),
+            'C' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Three, time),
+            'D' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Four, time),
+            'E' => SerialMessage::Buzz(Color::Red, BuzzerNumber::Five, time),
+            'F' => SerialMessage::Buzz(Color::Green, BuzzerNumber::One, time),
+            'G' => SerialMessage::Buzz(Color::Green, BuzzerNumber::Two, time),
+            'H' => SerialMessage::Buzz(Color::Green, BuzzerNumber::Three, time),
+            'I' => SerialMessage::Buzz(Color::Green, BuzzerNumber::Four, time),
+            'J' => SerialMessage::Buzz(Color::Green, BuzzerNumber::Five, time),
 
-            _ => SerialMessage::UnknownCommand(msg.to_string()),
+            _ => SerialMessage::UnknownCommand(msg.to_string(), time),
         }
     }
 
     pub fn to_human_readable(&self) -> String {
+        const fmt_string: &str = "[%H:%M:%S%.3f]";
         match self {
-            SerialMessage::Buzz(color, number) => {
-                format!("{} #{} buzzed!", color.to_str(), *number as u8)
+            SerialMessage::Buzz(color, number, time) => {
+                format!("{}: {} #{} buzzed!", time.format(fmt_string), color.to_str(), *number as u8)
             },
-            SerialMessage::Lockout(color, number) => {
-                format!("{} #{} was locked out!", color.to_str(), *number as u8)
+            SerialMessage::Lockout(color, number, time) => {
+                format!("{}: {} #{} was locked out!", time.format(fmt_string), color.to_str(), *number as u8)
             },
-            SerialMessage::Clear => "Buzzers were cleared".to_string(),
-            SerialMessage::UnknownCommand(cmd) => format!("Unknown Command: {}", cmd),
+            SerialMessage::Clear(time) => format!("{}: Buzzers were cleared", time.format(fmt_string)),
+            SerialMessage::UnknownCommand(cmd, time) => format!("{}: Unknown Command: '{}'", time.format(fmt_string), cmd),
         }
     }
 }
@@ -149,10 +152,11 @@ pub fn get_serial_message(connection: &mut Box<dyn SerialPort>) -> Result<Option
             }
         }
     }
+    let time = Local::now();
     let mut result = Vec::new();
     for byte in serial_buf {
-        if byte != 0 {
-            result.push(SerialMessage::from_raw(byte as char));
+        if byte != 0 && (byte != ' ' as u8) && (byte != '\n' as u8) && (byte != '\r' as u8) {
+            result.push(SerialMessage::from_raw(byte as char, time));
         }
     }
     Ok(Some(result))

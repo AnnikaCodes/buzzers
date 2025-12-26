@@ -44,8 +44,9 @@ def buzzer_loop():
         # print(f"buzz! at {t.tm_hour}:{t.tm_min}:{t.tm_sec}")
         status_led.value = True
         play_buzz_tone() # todo: different tones for different teams
-       
+        time.sleep(1) # delay - not sure why, but sometimes a clear happens right after a buzz
         await_clear(lockout_exclude)
+        print(protocol.CLEAR)
         led_pin.value = False
         status_led.value = False
 
@@ -54,15 +55,14 @@ def await_buzz(red, green):
         for led, switch, buzz_protocol, lockout_protocol in red + green:
             if switch.value == True:
                 time.sleep(0.01)
-                #switch.switch_to_input(pull=digitalio.Pull.DOWN)
                 if switch.value == False:
                     continue
-                # print ("BUZZ")
                 print(buzz_protocol)
                 return led, lockout_protocol
 def await_clear(last_buzz = ''):
     # duplicated
     locked_out_already = [last_buzz]
+    clear.switch_to_input(pull=digitalio.Pull.DOWN)
     while clear.value == False:
         if not audio.playing:
             audio.stop()
@@ -81,7 +81,6 @@ def await_clear(last_buzz = ''):
         switch.value = False
         switch.switch_to_input(pull=digitalio.Pull.DOWN)
 
-    print(protocol.CLEAR)
     clear.switch_to_output(value=False)
     clear.value = False
     clear.switch_to_input(pull=digitalio.Pull.DOWN)
