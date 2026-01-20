@@ -1,5 +1,8 @@
 // Initially copied from https://docs.rs/eframe/latest/eframe/
 use crate::serial;
+use crate::serial::SerialMessage;
+use chrono::Local;
+use egui::Vec2;
 
 pub struct App {
     messages_received: Vec<String>,
@@ -47,7 +50,18 @@ impl eframe::App for App {
                 eprintln!("Error reading serial message: {}", e);
             }
         }
-        let max_len = 50;
+        egui::TopBottomPanel::top("button")
+            .show(ctx, |ui| {
+                ui.with_layout(egui::Layout::top_down_justified(egui::Align::Center), |ui| {
+                                ctx.set_zoom_factor(2.0);
+                if ui.add(egui::Button::new("Clear Buzzers").min_size(Vec2::new(25.0, 25.0))).clicked() {
+                    // TODO: different types for sent/received messages so we don't need
+                    // a dummy time object
+                    serial::send_serial_message(&mut self.serial_connection, SerialMessage::Clear(Local::now())).unwrap();
+                }
+
+            });
+         });
         egui::CentralPanel::default().show(ctx, |ui| {
             egui::ScrollArea::vertical()
                 .auto_shrink(false)

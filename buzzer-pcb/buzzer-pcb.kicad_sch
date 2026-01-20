@@ -408,6 +408,167 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:C_Polarized"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Polarized"
+				(at 0.635 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Polarized capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "CP_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_Polarized_0_1"
+				(rectangle
+					(start -2.286 0.508)
+					(end 2.286 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.286) (xy -0.762 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.794) (xy -1.27 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 2.286 -0.508)
+					(end -2.286 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "C_Polarized_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:LED"
 			(pin_numbers
 				(hide yes)
@@ -1919,6 +2080,89 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Switch:SW_SPST"
 			(pin_names
 				(offset 0)
@@ -2188,6 +2432,12 @@
 		(uuid "1b186656-c1b5-44dd-a2f6-53aa138c18f3")
 	)
 	(junction
+		(at 100.33 36.83)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2244e059-11f8-4e0f-be8c-6bea44bc30a6")
+	)
+	(junction
 		(at 95.25 77.47)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2198,6 +2448,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "2f1b8737-4097-4be7-a01a-43eb03e44cf5")
+	)
+	(junction
+		(at 95.25 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "31d49609-2d78-430a-b1d9-c68716a2e1ef")
 	)
 	(junction
 		(at 148.59 109.22)
@@ -2216,6 +2472,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5d16fb98-baad-44e1-b7fc-de6a4516544a")
+	)
+	(junction
+		(at 105.41 36.83)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6e6c7faf-67e8-43a2-bb45-a1aa2068a43e")
 	)
 	(junction
 		(at 95.25 102.87)
@@ -2266,6 +2528,12 @@
 		(uuid "bf3d4376-cde9-49ff-aa60-3123a7424542")
 	)
 	(junction
+		(at 105.41 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cb15c50d-b017-4711-b698-d3376b86d474")
+	)
+	(junction
 		(at 95.25 90.17)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2276,6 +2544,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d3878299-7064-4ca5-8c17-09edc7d56f47")
+	)
+	(junction
+		(at 100.33 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "da69613c-8207-460c-8928-079708eb08e7")
 	)
 	(junction
 		(at 102.87 125.73)
@@ -2751,6 +3025,16 @@
 	)
 	(wire
 		(pts
+			(xy 111.76 36.83) (xy 111.76 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "458d7dea-5d67-4dc7-888a-773d84814cdc")
+	)
+	(wire
+		(pts
 			(xy 158.75 81.28) (xy 149.86 81.28)
 		)
 		(stroke
@@ -2841,7 +3125,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 46.99) (xy 127 46.99)
+			(xy 88.9 46.99) (xy 95.25 46.99)
 		)
 		(stroke
 			(width 0)
@@ -2991,6 +3275,16 @@
 	)
 	(wire
 		(pts
+			(xy 95.25 46.99) (xy 100.33 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6bb3ac20-1d15-4ecc-899f-f6b74f8605ad")
+	)
+	(wire
+		(pts
 			(xy 158.75 71.12) (xy 148.59 71.12)
 		)
 		(stroke
@@ -3111,6 +3405,16 @@
 	)
 	(wire
 		(pts
+			(xy 121.92 118.11) (xy 121.92 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7f6ce93f-ca81-48df-8819-805b84c7e365")
+	)
+	(wire
+		(pts
 			(xy 93.98 88.9) (xy 99.06 88.9)
 		)
 		(stroke
@@ -3121,6 +3425,16 @@
 	)
 	(wire
 		(pts
+			(xy 111.76 118.11) (xy 121.92 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83c5f4e0-dd76-4c23-abae-3104be47eb31")
+	)
+	(wire
+		(pts
 			(xy 96.52 97.79) (xy 96.52 91.44)
 		)
 		(stroke
@@ -3128,6 +3442,16 @@
 			(type default)
 		)
 		(uuid "83c70169-b06f-4d7e-8e7b-8c99eb8bac53")
+	)
+	(wire
+		(pts
+			(xy 95.25 36.83) (xy 100.33 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "85f89e90-efd1-4633-af11-5d05fec19b05")
 	)
 	(wire
 		(pts
@@ -3231,6 +3555,16 @@
 	)
 	(wire
 		(pts
+			(xy 105.41 46.99) (xy 127 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9871731b-d690-4ceb-832d-1675451ee187")
+	)
+	(wire
+		(pts
 			(xy 144.78 82.55) (xy 144.78 81.28)
 		)
 		(stroke
@@ -3278,6 +3612,16 @@
 			(type default)
 		)
 		(uuid "9d2c3661-3595-48a1-89c0-d7616f8a76d8")
+	)
+	(wire
+		(pts
+			(xy 105.41 36.83) (xy 111.76 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9d956c83-4fff-40e9-b577-9006f922b756")
 	)
 	(wire
 		(pts
@@ -3338,6 +3682,16 @@
 			(type default)
 		)
 		(uuid "aeb91861-534d-41ea-91d8-a263e2baf9a2")
+	)
+	(wire
+		(pts
+			(xy 95.25 44.45) (xy 95.25 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3aa6f4e-30b7-488d-bc0d-fdb7b59026f6")
 	)
 	(wire
 		(pts
@@ -3471,6 +3825,16 @@
 	)
 	(wire
 		(pts
+			(xy 100.33 36.83) (xy 105.41 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c5837f93-b810-43c4-a726-86f21f0953a2")
+	)
+	(wire
+		(pts
 			(xy 101.6 137.16) (xy 101.6 142.24)
 		)
 		(stroke
@@ -3538,6 +3902,16 @@
 			(type default)
 		)
 		(uuid "cc8e05e2-e5d2-48db-ad14-67a6c3d104d0")
+	)
+	(wire
+		(pts
+			(xy 100.33 46.99) (xy 105.41 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cd73a927-7d04-4e80-acc3-49a77a96e52a")
 	)
 	(wire
 		(pts
@@ -3751,6 +4125,16 @@
 	)
 	(wire
 		(pts
+			(xy 100.33 44.45) (xy 100.33 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9d19d61-82a0-4215-a783-beb1870aa443")
+	)
+	(wire
+		(pts
 			(xy 97.79 71.12) (xy 99.06 71.12)
 		)
 		(stroke
@@ -3758,6 +4142,16 @@
 			(type default)
 		)
 		(uuid "fa0092b5-c509-44fe-83a8-f8500ad06ad1")
+	)
+	(wire
+		(pts
+			(xy 105.41 44.45) (xy 105.41 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb99b538-52c6-4fbd-ba41-9e1a4d6f9607")
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_2_Open")
@@ -3785,7 +4179,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm"
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged_Pad1.0x1.5mm"
 			(at 119.38 44.45 0)
 			(effects
 				(font
@@ -3853,7 +4247,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 168.91 85.09 90)
 			(effects
 				(font
@@ -3995,7 +4389,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 55.88 99.06 90)
 			(effects
 				(font
@@ -4214,7 +4608,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 168.91 97.79 90)
 			(effects
 				(font
@@ -4492,7 +4886,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 168.91 110.49 90)
 			(effects
 				(font
@@ -4541,6 +4935,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 105.41 40.64 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5beeb35f-2b9a-4a96-bfea-2ba0a3a680a7")
+		(property "Reference" "C1"
+			(at 101.6 42.7991 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1 uF"
+			(at 101.6 40.2591 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Library:XTAL_ZTA-2.44MG"
+			(at 104.4448 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 105.41 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 105.41 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "1554e5e8-2073-47e5-af9d-23393ece2b24")
+		)
+		(pin "1"
+			(uuid "f00bb195-4d7c-465c-90cd-c65755d5f8c9")
+		)
+		(instances
+			(project "buzzer-pcb"
+				(path "/c5f87bad-3705-4f91-b27b-c9778a039b3c"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:4P4C")
 		(at 168.91 58.42 180)
 		(unit 1)
@@ -4566,7 +5030,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 168.91 59.69 90)
 			(effects
 				(font
@@ -4751,6 +5215,70 @@
 		)
 	)
 	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 60.96 43.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "78bee9ba-5aff-4b29-9cbc-ff8f3ff71fca")
+		(property "Reference" "H2"
+			(at 63.5 41.9099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 63.5 44.4499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 60.96 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 60.96 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 60.96 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project ""
+				(path "/c5f87bad-3705-4f91-b27b-c9778a039b3c"
+					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:LED")
 		(at 97.79 142.24 180)
 		(unit 1)
@@ -4828,6 +5356,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 100.33 40.64 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7e760305-bd74-47ce-8c94-4b54df91b26a")
+		(property "Reference" "C2"
+			(at 96.52 42.7991 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1 uF"
+			(at 96.52 40.2591 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Library:XTAL_ZTA-2.44MG"
+			(at 99.3648 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 100.33 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 100.33 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "1554e5e8-2073-47e5-af9d-23393ece2b23")
+		)
+		(pin "1"
+			(uuid "f00bb195-4d7c-465c-90cd-c65755d5f8c8")
+		)
+		(instances
+			(project "buzzer-pcb"
+				(path "/c5f87bad-3705-4f91-b27b-c9778a039b3c"
+					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 121.92 121.92 0)
 		(unit 1)
@@ -4888,6 +5486,70 @@
 			(project ""
 				(path "/c5f87bad-3705-4f91-b27b-c9778a039b3c"
 					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 55.88 36.83 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "99a35ccf-f5ea-4999-ba91-ba680fecb718")
+		(property "Reference" "H1"
+			(at 58.42 35.5599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 58.42 38.0999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 55.88 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 55.88 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 55.88 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project ""
+				(path "/c5f87bad-3705-4f91-b27b-c9778a039b3c"
+					(reference "H1")
 					(unit 1)
 				)
 			)
@@ -5064,7 +5726,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 55.88 111.76 90)
 			(effects
 				(font
@@ -5138,7 +5800,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 55.88 73.66 90)
 			(effects
 				(font
@@ -5214,7 +5876,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Module:RaspberryPi_Pico_Common_Unspecified"
+		(property "Footprint" "Module:RaspberryPi_Pico_Common_THT"
 			(at 121.92 133.35 0)
 			(effects
 				(font
@@ -5464,7 +6126,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 55.88 60.96 90)
 			(effects
 				(font
@@ -5538,7 +6200,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm"
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged_Pad1.0x1.5mm"
 			(at 133.35 44.45 0)
 			(effects
 				(font
@@ -5674,7 +6336,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 168.91 72.39 90)
 			(effects
 				(font
@@ -5826,7 +6488,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_RJ:RJ9_Evercom_5301-440xxx_Horizontal"
+		(property "Footprint" "Library:Jack for Buzzers"
 			(at 55.88 86.36 90)
 			(effects
 				(font
@@ -5937,6 +6599,76 @@
 			(project "buzzer-pcb"
 				(path "/c5f87bad-3705-4f91-b27b-c9778a039b3c"
 					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 95.25 40.64 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f62df096-e8c3-4546-b2cb-9eb2d2fc6d1b")
+		(property "Reference" "C3"
+			(at 91.44 42.7991 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1 uF"
+			(at 91.44 40.2591 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Library:XTAL_ZTA-2.44MG"
+			(at 94.2848 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 95.25 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 95.25 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "1554e5e8-2073-47e5-af9d-23393ece2b25")
+		)
+		(pin "1"
+			(uuid "f00bb195-4d7c-465c-90cd-c65755d5f8ca")
+		)
+		(instances
+			(project "buzzer-pcb"
+				(path "/c5f87bad-3705-4f91-b27b-c9778a039b3c"
+					(reference "C3")
 					(unit 1)
 				)
 			)

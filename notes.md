@@ -15,3 +15,11 @@ drop (which improves efficiency and reduces ripple on VSYS)."
 - TODO: fix bug where simulatenous buzzes
 
 Buzzer wired 11/8: Green jack wire -> LED +, Red jack wire -> LED -, black & yellow => switch
+
+1/17: to convert proto buzzer -> new buzzer add an extra wire and wire the following in the cable together:
+- black->green
+- yellow->red
+- green->black
+- red->yellow
+
+(the PCB jacks send red->input pin, yellow->ground, black->LED resistor, green->3v3

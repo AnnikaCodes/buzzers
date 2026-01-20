@@ -6,6 +6,9 @@ use serialport::SerialPort;
 use serialport::SerialPortType::UsbPort;
 use std::time::Duration;
 
+const TIME_FMT_STRING: &str = "[%H:%M:%S%.3f]";
+
+
 pub fn get_serial_connection() -> Option<Result<Box<dyn SerialPort>, serialport::Error>> {
     let ports = match serialport::available_ports() {
         Ok(ports) => ports,
@@ -64,6 +67,7 @@ pub fn try_get_serial_connection(timeout: u64) -> Box<dyn SerialPort> {
 }
 
 // See protocol.md
+#[derive(Debug)]
 pub enum SerialMessage {
     /// Someone buzzed
     Buzz(Color, BuzzerNumber, DateTime<Local>),
@@ -108,12 +112,11 @@ impl SerialMessage {
     }
 
     pub fn to_human_readable(&self) -> String {
-        const fmt_string: &str = "[%H:%M:%S%.3f]";
         match self {
             SerialMessage::Buzz(color, number, time) => {
                 format!(
                     "{}: {} #{} buzzed!",
-                    time.format(fmt_string),
+                    time.format(TIME_FMT_STRING),
                     color.to_str(),
                     *number as u8
                 )
@@ -121,22 +124,23 @@ impl SerialMessage {
             SerialMessage::Lockout(color, number, time) => {
                 format!(
                     "{}: {} #{} was locked out!",
-                    time.format(fmt_string),
+                    time.format(TIME_FMT_STRING),
                     color.to_str(),
                     *number as u8
                 )
             }
             SerialMessage::Clear(time) => {
-                format!("{}: Buzzers were cleared", time.format(fmt_string))
+                format!("{}: Buzzers were cleared", time.format(TIME_FMT_STRING))
             }
             SerialMessage::UnknownCommand(cmd, time) => {
-                format!("{}: Unknown Command: '{}'", time.format(fmt_string), cmd)
+                format!("{}: Unknown Command: '{}'", time.format(TIME_FMT_STRING), cmd)
             }
         }
     }
 }
 
 // Buzzer colors
+#[derive(Debug)]
 pub enum Color {
     Red,
     Green,
@@ -151,7 +155,7 @@ impl Color {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub enum BuzzerNumber {
     One = 1,
     Two = 2,
@@ -183,3 +187,12 @@ pub fn get_serial_message(
     }
     Ok(Some(result))
 }
+
+pub fn send_serial_message(connection: &mut Box<dyn SerialPort>, message: SerialMessage) -> Result<(), std::io::Error> {
+    let message_raw: u8 = match message {
+        SerialMessage::Clear(_) => b'x',
+        _ => panic!("Unimplemented: sending serial message not of clear type: {:#?}", message),
+    };
+    connection.write_all(&[message_raw])
+}
+
