@@ -41,27 +41,10 @@ for led, switch, _, _ in red_pins + green_pins:
     led.switch_to_output(value=False)
     led.direction = digitalio.Direction.OUTPUT
     switch.switch_to_input(pull=digitalio.Pull.DOWN)
-    led.value = True
-
-import time
-red_led.value = True
-green_led.value = True
-audio = audiopwmio.PWMAudioOut(board.GP14)
-
-def play_startup():
-    b = audiomp3.MP3Decoder(open("./startup.mp3", "rb"))
-    audio.play(b)
-play_startup()
-while audio.playing:
-    pass
-
-for led, _, _, _ in red_pins + green_pins:
-    led.value = False
-red_led.value = False
-green_led.value = False
-
 
 # https://learn.adafruit.com/mp3-playback-rp2040/pico-mp3
+audio = audiopwmio.PWMAudioOut(board.GP14)
+import time
 import supervisor
 import sys
 def check_for_serial_message():
@@ -108,12 +91,9 @@ def await_clear(last_buzz = ''):
     clear.value = False
     clear.switch_to_input(pull=digitalio.Pull.DOWN)
     while clear.value == False:
-        m = check_for_serial_message()
-        if m == 'x':
+        if check_for_serial_message() == 'x':
             # Forced clear
             return do_clear()
-        if m == '2':
-            play_two_bits()
         if not audio.playing:
             audio.stop()
         for led, switch, _, lockout_protocol in red_pins + green_pins:
@@ -143,11 +123,6 @@ def do_clear():
 def play_buzz_tone():
     buzz_tone = audiomp3.MP3Decoder(open("./buzz.mp3", "rb"))
     audio.play(buzz_tone)
-
-def play_two_bits():
-    b = audiomp3.MP3Decoder(open("./two-bits.mp3", "rb"))
-    audio.play(b)
-
-
+    
 print("go")
 buzzer_loop()

@@ -77,6 +77,7 @@ pub enum SerialMessage {
     Clear(DateTime<Local>),
     /// We got an unknown command over serial!
     UnknownCommand(String, DateTime<Local>),
+    TwoBits,
 }
 
 impl SerialMessage {
@@ -132,6 +133,7 @@ impl SerialMessage {
             SerialMessage::Clear(time) => {
                 format!("{}: Buzzers were cleared", time.format(TIME_FMT_STRING))
             }
+            SerialMessage::TwoBits => format!("Two Bits!"),
             SerialMessage::UnknownCommand(cmd, time) => {
                 format!("{}: Unknown Command: '{}'", time.format(TIME_FMT_STRING), cmd)
             }
@@ -191,6 +193,7 @@ pub fn get_serial_message(
 pub fn send_serial_message(connection: &mut Box<dyn SerialPort>, message: SerialMessage) -> Result<(), std::io::Error> {
     let message_raw: u8 = match message {
         SerialMessage::Clear(_) => b'x',
+        SerialMessage::TwoBits => b'2',
         _ => panic!("Unimplemented: sending serial message not of clear type: {:#?}", message),
     };
     connection.write_all(&[message_raw])
