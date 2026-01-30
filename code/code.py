@@ -6,7 +6,7 @@ import protocol
 
 CLEAR_PIN = board.GP13
 # (led, switch)
-GREEN_TEAM_PINS = [(board.GP28, board.GP27), (board.GP26, board.GP22), (board.GP17, board.GP16), (board.GP19, board.GP18), (board.GP21, board.GP20)] # todo what is pin for last red team?
+GREEN_TEAM_PINS = [(board.GP17, board.GP16), (board.GP19, board.GP18), (board.GP21, board.GP20), (board.GP26, board.GP22), (board.GP28, board.GP27)] # todo what is pin for last red team?
 RED_TEAM_PINS = [(board.GP1, board.GP0), (board.GP2, board.GP3), (board.GP5, board.GP4), (board.GP7, board.GP8), (board.GP11, board.GP10)]
 
 clear = digitalio.DigitalInOut(CLEAR_PIN)
@@ -54,6 +54,7 @@ def play_startup():
 play_startup()
 while audio.playing:
     pass
+time.sleep(1)
 
 for led, _, _, _ in red_pins + green_pins:
     led.value = False
@@ -100,6 +101,8 @@ def await_buzz(red, green):
                 
                 return led, lockout_protocol
 def await_clear(last_buzz = ''):
+    for _ in range(100): # clear buffer
+        check_for_serial_message()
     while audio.playing:
         pass
     # duplicated
@@ -149,5 +152,4 @@ def play_two_bits():
     audio.play(b)
 
 
-print("go")
 buzzer_loop()
