@@ -76,7 +76,6 @@ jobs:
       # (PRs run on the *source* but secrets are usually on the *target* -- that's *good*
       # but also really annoying to build CI around when it needs secrets to work right.)
       - id: plan
-        working-directory: ./buzzer-ui
         run: |
           dist ${{ (!github.event.pull_request && format('host --steps=create --tag={0}', github.ref_name)) || 'plan' }} --output-format=json > plan-dist-manifest.json
           echo "dist ran successfully"
@@ -86,7 +85,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-plan-dist-manifest
-          path: buzzer-ui/plan-dist-manifest.json
+          path: plan-dist-manifest.json
 
   # Build and packages all the platform-specific things
   build-local-artifacts:
@@ -115,7 +114,6 @@ jobs:
       BUILD_MANIFEST_NAME: target/distrib/${{ join(matrix.targets, '-') }}-dist-manifest.json
     steps:
       - name: enable windows longpaths
-        working-directory: ./buzzer-ui
         run: |
           git config --global core.longpaths true
       - uses: actions/checkout@v4
@@ -123,7 +121,6 @@ jobs:
           persist-credentials: false
           submodules: recursive
       - name: Install Rust non-interactively if not already installed
-        working-directory: ./buzzer-ui
         if: ${{ matrix.container }}
         run: |
           if ! command -v cargo > /dev/null 2>&1; then
@@ -131,7 +128,6 @@ jobs:
             echo "$HOME/.cargo/bin" >> $GITHUB_PATH
           fi
       - name: Install dist
-        working-directory: ./buzzer-ui
         run: ${{ matrix.install_dist.run }}
       # Get the dist-manifest
       - name: Fetch local artifacts
@@ -141,18 +137,15 @@ jobs:
           path: target/distrib/
           merge-multiple: true
       - name: Install dependencies
-        working-directory: ./buzzer-ui
         run: |
           ${{ matrix.packages_install }}
       - name: Build artifacts
-        working-directory: ./buzzer-ui
         run: |
           # Actually do builds and make zips and whatnot
           dist build ${{ needs.plan.outputs.tag-flag }} --print=linkage --output-format=json ${{ matrix.dist_args }} > dist-manifest.json
           echo "dist ran successfully"
       - id: cargo-dist
         name: Post-build
-        working-directory: ./buzzer-ui
         # We force bash here just because github makes it really hard to get values up
         # to "real" actions without writing to env-vars, and writing to env-vars has
         # inconsistent syntax between shell and powershell.
@@ -168,7 +161,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-build-local-${{ join(matrix.targets, '_') }}
-          working-directory: ./buzzer-ui
           path: |
             ${{ steps.cargo-dist.outputs.paths }}
             ${{ env.BUILD_MANIFEST_NAME }}
@@ -191,7 +183,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: cargo-dist-cache
-          working-directory: ./buzzer-ui
           path: ~/.cargo/bin/
       - run: chmod +x ~/.cargo/bin/dist
       # Get all the local artifacts for the global tasks to use (for e.g. checksums)
@@ -199,11 +190,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: artifacts-*
-          working-directory: ./buzzer-ui
           path: target/distrib/
           merge-multiple: true
       - id: cargo-dist
-        working-directory: ./buzzer-ui
         shell: bash
         run: |
           dist build ${{ needs.plan.outputs.tag-flag }} --output-format=json "--artifacts=global" > dist-manifest.json
@@ -219,7 +208,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-build-global
-          working-directory: ./buzzer-ui
           path: |
             ${{ steps.cargo-dist.outputs.paths }}
             ${{ env.BUILD_MANIFEST_NAME }}
@@ -240,13 +228,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-          working-directory: ./buzzer-ui
           submodules: recursive
       - name: Install cached dist
         uses: actions/download-artifact@v4
         with:
           name: cargo-dist-cache
-          working-directory: ./buzzer-ui
           path: ~/.cargo/bin/
       - run: chmod +x ~/.cargo/bin/dist
       # Fetch artifacts from scratch-storage
@@ -255,10 +241,8 @@ jobs:
         with:
           pattern: artifacts-*
           path: target/distrib/
-          working-directory: ./buzzer-ui
           merge-multiple: true
       - id: host
-        working-directory: ./buzzer-ui
         shell: bash
         run: |
           dist host ${{ needs.plan.outputs.tag-flag }} --steps=upload --steps=release --output-format=json > dist-manifest.json
@@ -270,23 +254,19 @@ jobs:
         with:
           # Overwrite the previous copy
           name: artifacts-dist-manifest
-          working-directory: ./buzzer-ui
           path: dist-manifest.json
       # Create a GitHub Release while uploading all files to it
       - name: "Download GitHub Artifacts"
         uses: actions/download-artifact@v4
         with:
           pattern: artifacts-*
-          working-directory: ./buzzer-ui
           path: artifacts
           merge-multiple: true
       - name: Cleanup
-        working-directory: ./buzzer-ui
         run: |
           # Remove the granular manifests
           rm -f artifacts/*-dist-manifest.json
       - name: Create GitHub Release
-        working-directory: ./buzzer-ui
         env:
           PRERELEASE_FLAG: "${{ fromJson(steps.host.outputs.manifest).announcement_is_prerelease && '--prerelease' || '' }}"
           ANNOUNCEMENT_TITLE: "${{ fromJson(steps.host.outputs.manifest).announcement_title }}"
