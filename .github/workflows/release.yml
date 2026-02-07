@@ -139,6 +139,9 @@ jobs:
       - name: Install dependencies
         run: |
           ${{ matrix.packages_install }}
+      - name: Install libudev (Linux)
+        if: ${{ runner.os == 'Linux' }}
+        run: sudo apt-get install -y libudev-dev
       - name: Build artifacts
         run: |
           # Actually do builds and make zips and whatnot
