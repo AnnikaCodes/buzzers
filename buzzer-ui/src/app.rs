@@ -50,30 +50,51 @@ impl eframe::App for App {
                 eprintln!("Error reading serial message: {}", e);
             }
         }
-        egui::TopBottomPanel::top("button")
-            .show(ctx, |ui| {
-                ui.with_layout(egui::Layout::top_down_justified(egui::Align::Center), |ui| {
-                                ctx.set_zoom_factor(2.0);
-                if ui.add(egui::Button::new("Clear Buzzers").min_size(Vec2::new(25.0, 25.0))).clicked() {
-                    // TODO: different types for sent/received messages so we don't need
-                    // a dummy time object
-                    serial::send_serial_message(&mut self.serial_connection, SerialMessage::Clear(Local::now())).unwrap();
-                }
-
-            });
-         });
-            egui::TopBottomPanel::top("button2")
-            .show(ctx, |ui| {
-                ui.with_layout(egui::Layout::top_down_justified(egui::Align::Center), |ui| {
-                                ctx.set_zoom_factor(2.0);
-                if ui.add(egui::Button::new("Play 'Two Bits' (only works between buzz and clear)").min_size(Vec2::new(25.0, 25.0))).clicked() {
-                    // TODO: different types for sent/received messages so we don't need
-                    // a dummy time object
-                    serial::send_serial_message(&mut self.serial_connection, SerialMessage::TwoBits).unwrap();
-                }
-
-            });
-         });
+        egui::TopBottomPanel::top("button").show(ctx, |ui| {
+            ui.with_layout(
+                egui::Layout::top_down_justified(egui::Align::Center),
+                |ui| {
+                    ctx.set_zoom_factor(2.0);
+                    if ui
+                        .add(egui::Button::new("Clear Buzzers").min_size(Vec2::new(25.0, 25.0)))
+                        .clicked()
+                    {
+                        // TODO: different types for sent/received messages so we don't need
+                        // a dummy time object
+                        serial::send_serial_message(
+                            &mut self.serial_connection,
+                            SerialMessage::Clear(Local::now()),
+                        )
+                        .unwrap();
+                    }
+                },
+            );
+        });
+        egui::TopBottomPanel::top("button2").show(ctx, |ui| {
+            ui.with_layout(
+                egui::Layout::top_down_justified(egui::Align::Center),
+                |ui| {
+                    ctx.set_zoom_factor(2.0);
+                    if ui
+                        .add(
+                            egui::Button::new(
+                                "Play 'Two Bits' (only works between buzz and clear)",
+                            )
+                            .min_size(Vec2::new(25.0, 25.0)),
+                        )
+                        .clicked()
+                    {
+                        // TODO: different types for sent/received messages so we don't need
+                        // a dummy time object
+                        serial::send_serial_message(
+                            &mut self.serial_connection,
+                            SerialMessage::TwoBits,
+                        )
+                        .unwrap();
+                    }
+                },
+            );
+        });
 
         egui::CentralPanel::default().show(ctx, |ui| {
             egui::ScrollArea::vertical()

@@ -8,7 +8,6 @@ use std::time::Duration;
 
 const TIME_FMT_STRING: &str = "[%H:%M:%S%.3f]";
 
-
 pub fn get_serial_connection() -> Option<Result<Box<dyn SerialPort>, serialport::Error>> {
     let ports = match serialport::available_ports() {
         Ok(ports) => ports,
@@ -135,7 +134,11 @@ impl SerialMessage {
             }
             SerialMessage::TwoBits => format!("Two Bits!"),
             SerialMessage::UnknownCommand(cmd, time) => {
-                format!("{}: Unknown Command: '{}'", time.format(TIME_FMT_STRING), cmd)
+                format!(
+                    "{}: Unknown Command: '{}'",
+                    time.format(TIME_FMT_STRING),
+                    cmd
+                )
             }
         }
     }
@@ -190,12 +193,17 @@ pub fn get_serial_message(
     Ok(Some(result))
 }
 
-pub fn send_serial_message(connection: &mut Box<dyn SerialPort>, message: SerialMessage) -> Result<(), std::io::Error> {
+pub fn send_serial_message(
+    connection: &mut Box<dyn SerialPort>,
+    message: SerialMessage,
+) -> Result<(), std::io::Error> {
     let message_raw: u8 = match message {
         SerialMessage::Clear(_) => b'x',
         SerialMessage::TwoBits => b'2',
-        _ => panic!("Unimplemented: sending serial message not of clear type: {:#?}", message),
+        _ => panic!(
+            "Unimplemented: sending serial message not of clear type: {:#?}",
+            message
+        ),
     };
     connection.write_all(&[message_raw])
 }
-
