@@ -6,6 +6,7 @@ repository = "https://github.com/AnnikaCodes/buzzers"
 homepage = "https://worldbrightening.net/buzzers/"
 description = "software to control Annika's quizbowl buzzers"
 authors = ["Annika Larson"]
+license = "MIT"
 
 [package.metadata.wix]
 upgrade-guid = "7381217D-E5EC-4385-85B1-DB9205FF430C"
